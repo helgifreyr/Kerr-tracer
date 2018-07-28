@@ -1,12 +1,19 @@
 from RHS import RHS
+import tarfile
 
 def writeToFile(proper_time,solutions,p,endPoint):
     with open('output.dat', 'w') as f:
         r1 = solutions[0][3]
+        th1 = solutions[0][5]
+        ph1 = solutions[0][7]
+        xth1 = solutions[0][4]
+        xph1 = solutions[0][6]
         f.write('# '+' '.join([str(i) for i in p])+' '+str(r1)+' '+str(endPoint)+'\n')
         # Print & save the solution.
         for time, solution in zip(proper_time, solutions):
             f.write(str(time)+' '.join([" %s" % i for i in solution])+'\n')    
+    tarName = 'data/r1='+'%4.2f'%r1 + '-th1='+'%4.3f'%th1 + '-ph1='+'%4.3f'%ph1 + '-xth1='+'%4.3f'%xth1 + '-xph1='+'%4.3f'%xph1+'.tar.gz'
+    make_tarfile(tarName, 'output.dat')
 
 def solveGeodesic(RightHandSide,s,p,x0):
     
@@ -38,10 +45,14 @@ def run(RHS, s, p, x0):
     s, xsol=solveGeodesic(RHS,s,p,x0)
     return s, xsol
 
+def make_tarfile(output_filename, source_dir):
+    with tarfile.open(output_filename, "w:gz") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
+
 # Use ODEINT to solve the differential equations defined by the vector field
 from scipy.integrate import odeint
 from numpy import sqrt, zeros, pi, linspace, append, loadtxt, pi, abs, sin, cos, tan, sqrt
-import sys
+import os
 import time
 from random import random, uniform, randint
 tstart = time.time()
@@ -54,18 +65,18 @@ rs = 2*M
 
 # Initial conditions
 s1 = 0
-r1 = 25 # in multiples of rs
-th1 = pi/2.
-ph1 = pi/2. # this is where "around" the BH the ray starts, 0 for east, pi/2 for north, etc
+r1 = uniform(15,25) # in multiples of rs
+# th1 = pi/2.
+# ph1 = pi/2. # this is where "around" the BH the ray starts, 0 for east, pi/2 for north, etc
 th1 = uniform(0,pi)
 ph1 = uniform(0,2*pi)
 
 xr1 = -0.1 # this is initial r velocity if you'd like
-xth1 = 0.001 # up above the BH and then shoots below items
-xth1 = -0.001 # down below the BH and then shoots up above it
-xph1 = -0.001 # a bit up
-xph1 = 0 # straight in
-xph1 = 0.001 # a bit down
+# xth1 = 0.001 # up above the BH and then shoots below items
+# xth1 = -0.001 # down below the BH and then shoots up above it
+# xph1 = -0.001 # a bit up
+# xph1 = 0 # straight in
+# xph1 = 0.001 # a bit down
 xt1 = 0
 
 xth1 = randint(-1,1)*uniform(0.0005,0.001)
