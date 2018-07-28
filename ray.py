@@ -2,7 +2,8 @@ from RHS import RHS
 
 def writeToFile(proper_time,solutions,p,endPoint):
     with open('output.dat', 'w') as f:
-        f.write('# '+' '.join([str(i) for i in p])+' '+str(endPoint)+'\n')
+        r1 = solutions[0][3]
+        f.write('# '+' '.join([str(i) for i in p])+' '+str(r1)+' '+str(endPoint)+'\n')
         # Print & save the solution.
         for time, solution in zip(proper_time, solutions):
             f.write(str(time)+' '.join([" %s" % i for i in solution])+'\n')    

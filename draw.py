@@ -2,27 +2,31 @@ import matplotlib as mpl
 mpl.use('Agg')
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import os
+from matplotlib.patches import Circle
+from matplotlib.collections import PatchCollection
 from random import randint
 
-
-from numpy import sqrt, pi, sin, cos
-
-
+from pylab import figure, polar, plot, xlabel, ylabel, grid, hold, legend, title, savefig, show, subplot
+from numpy import loadtxt, cos, sin, meshgrid, sqrt, linspace, pi, outer, ones, size
+from PIL import Image
+import PIL.ImageOps    
 
 def draw3D(M,a,r1):
     s, xt, t, xr, r, xth, th, xph, ph = loadtxt('output.dat', unpack=True)
-    rs = M+sqrt(M**2-a**2)
-    rs = 2*M
+    fline=open('output.dat').readline().rstrip().split()
+    rs = float(fline[1])
+    M = float(fline[2])
+    a = float(fline[3])
+    r1 = float(fline[4])
 
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.grid(False)
     ax.axis('off')
     ax.autoscale(enable=False,axis='both')  #you will need this line to change the Z-axis
-    ax.set_xbound(-1.1*r1, 1.1*r1)
-    ax.set_ybound(-1.1*r1, 1.1*r1)
-    ax.set_zbound(-1.1*r1, 1.1*r1)
+    ax.set_xbound(-0.4*r1, 0.4*r1)
+    ax.set_ybound(-0.4*r1, 0.4*r1)
+    ax.set_zbound(-0.4*r1, 0.4*r1)
     x = r * cos(th) * sin(ph)
     y = r * sin(th) * sin(ph)
     z = r * cos(ph)
@@ -49,12 +53,6 @@ def invertImage():
     inverted_image.save('output-inverted.png')
 
     
-from pylab import figure, polar, plot, xlabel, ylabel, grid, hold, legend, title, savefig, show, subplot
-from matplotlib.patches import Circle
-from matplotlib.collections import PatchCollection
-from numpy import loadtxt, sin, meshgrid, sqrt, linspace, pi, outer, ones, size
-from PIL import Image
-import PIL.ImageOps    
 M=1
 a=0.5
 r1=10
