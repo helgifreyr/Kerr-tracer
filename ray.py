@@ -12,8 +12,8 @@ def writeToFile(proper_time,solutions,p,endPoint):
         # Print & save the solution.
         for time, solution in zip(proper_time, solutions):
             f.write(str(time)+' '.join([" %s" % i for i in solution])+'\n')    
-    tarName = 'data/r1='+'%4.2f'%r1 + '-th1='+'%4.3f'%th1 + '-ph1='+'%4.3f'%ph1 + '-xth1='+'%4.3f'%xth1 + '-xph1='+'%4.3f'%xph1+'.tar.gz'
-    make_tarfile(tarName, 'output.dat')
+    # tarName = 'data/r1='+'%4.2f'%r1 + '-th1='+'%4.3f'%th1 + '-ph1='+'%4.3f'%ph1 + '-xth1='+'%4.3f'%xth1 + '-xph1='+'%4.3f'%xph1+'.tar.gz'
+    # make_tarfile(tarName, 'output.dat')
 
 def solveGeodesic(RightHandSide,s,p,x0):
     
