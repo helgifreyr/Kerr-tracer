@@ -6,8 +6,7 @@ from matplotlib.patches import Circle
 from matplotlib.collections import PatchCollection
 from random import randint
 
-from pylab import figure, polar, plot, xlabel, ylabel, grid, hold, legend, title, savefig, show, subplot
-from numpy import loadtxt, cos, sin, meshgrid, sqrt, linspace, pi, outer, ones, size
+from numpy import loadtxt, cos, sin, linspace, pi, outer, ones, size
 from PIL import Image, ImageChops, ImageOps
 from papirus import PapirusImage
 
@@ -27,9 +26,9 @@ def draw3D(M,a,r1):
     ax.grid(False)
     ax.axis('off')
     ax.autoscale(enable=False,axis='both')  #you will need this line to change the Z-axis
-    ax.set_xbound(-0.25*r1, 0.25*r1)
-    ax.set_ybound(-0.25*r1, 0.25*r1)
-    ax.set_zbound(-0.25*r1, 0.25*r1)
+    ax.set_xbound(-0.3*r1*1.6, 0.3*r1*1.6)
+    ax.set_ybound(-0.3*r1*1.6, 0.3*r1*1.6)
+    ax.set_zbound(-0.3*r1, 0.3*r1)
     x = r * cos(th) * sin(ph)
     y = r * sin(th) * sin(ph)
     z = r * cos(ph)
@@ -38,11 +37,12 @@ def draw3D(M,a,r1):
     
     X,Y,Z = generateSphere(rs,[0,0,0])
     ax.plot_surface(X, Y, Z,  color='black', linewidth=0, alpha=1)
-    ax.view_init(elev=randint(-120,120), azim=randint(0,360))
-    savefig('output.png',dpi=800)
+    ax.view_init(elev=randint(-90,90), azim=randint(0,360))
+    ax.view_init(elev=0, azim=0)
+    plt.savefig('output.png',dpi=800)
 
 def invertImage():
-    image = Image.open('output.png')
+    image = Image.open('output-trimmed.png')
     image = image.convert('L')
     inverted_image = ImageOps.invert(image)
     inverted_image = inverted_image.convert('1')
@@ -75,6 +75,6 @@ a=0.5
 r1=10
 # drawBitmap(M,a,r1)
 draw3D(M,a,r1)
-#trim('output')
+trim('output')
 invertImage()
 # drawOnScreen()
