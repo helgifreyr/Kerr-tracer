@@ -2,6 +2,9 @@ from RHS import RHS
 import tarfile
 
 def writeToFile(proper_time,solutions,p,endPoint):
+    """
+    Write the solutions to a file
+    """
     with open('output.dat', 'w') as f:
         r1 = solutions[0][3]
         th1 = solutions[0][5]
@@ -16,7 +19,10 @@ def writeToFile(proper_time,solutions,p,endPoint):
     # make_tarfile(tarName, 'output.dat')
 
 def solveGeodesic(RightHandSide,s,p,x0):
-    
+    """
+    Solve the equations. We need to check at each time step whether the particle is too close to the black hole or has escaped.
+    Define escaped as 10% further away from the BH than it started. This makes no sense if we start close to the BH.
+    """
     solutions = [[0,0,0,0] for i in range(numpoints)]
     solutions[0] = x0
     rs,M,a = p
@@ -25,8 +31,9 @@ def solveGeodesic(RightHandSide,s,p,x0):
     abserr = 1.0e-6
     relerr = 1.0e-6
 
-    # loop each time step, kill loop if r is too close to rs
+    # endPoint is 0 if the ray escapes and 1 if it falls in. keep this in case I ever want to draw the shadow
     endPoint = 0
+    # loop each time step, kill loop if r is too close to rs
     for idx in range(1,int(numpoints)):
         if x0[3]>1.01*rs and x0[3]<1.1*r1:
             solutions[idx] = odeint(RightHandSide, x0, [s[idx-1],s[idx]], args=(p,), atol=abserr, rtol=relerr)[1]
@@ -46,6 +53,9 @@ def run(RHS, s, p, x0):
     return s, xsol
 
 def make_tarfile(output_filename, source_dir):
+    """
+    tar the solution and save it
+    """
     with tarfile.open(output_filename, "w:gz") as tar:
         tar.add(source_dir, arcname=os.path.basename(source_dir))
 
@@ -64,6 +74,7 @@ rs = M+sqrt(M**2-a**2)
 rs = 2*M
 
 # Initial conditions
+# randomize the initial position
 s1 = 0
 r1 = uniform(15,25) # in multiples of rs
 # th1 = pi/2.
@@ -72,13 +83,14 @@ th1 = uniform(0,pi)
 ph1 = uniform(0,2*pi)
 
 xr1 = -0.1 # this is initial r velocity if you'd like
+# here below are tests for the angles
 # xth1 = 0.001 # up above the BH and then shoots below items
 # xth1 = -0.001 # down below the BH and then shoots up above it
 # xph1 = -0.001 # a bit up
 # xph1 = 0 # straight in
 # xph1 = 0.001 # a bit down
-xt1 = 0
 
+# randomize the initial angles but always shoot towards the black hole (ish)
 xth1 = randint(-1,1)*uniform(0.0005,0.001)
 xph1 = randint(-1,1)*uniform(0.0005,0.001)
 

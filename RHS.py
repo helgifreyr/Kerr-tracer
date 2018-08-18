@@ -3,6 +3,7 @@ from scipy import sin, cos, tan, sqrt
 def RHS(w, s, p):
     """
     Defines the differential equations for the system 
+    found using SymPy and GraviPy.
 
     Arguments:
         x :  vector of the state variables:
@@ -30,9 +31,9 @@ def RHS(w, s, p):
     f = [geodesic[0],
          xt,
          geodesic[1],
-		 xr,
-		 geodesic[2],
-		 xth,
-		 geodesic[3],
-		 xph]
+ 	 xr,
+	 geodesic[2],
+	 xth,
+	 geodesic[3],
+	 xph]
     return f
